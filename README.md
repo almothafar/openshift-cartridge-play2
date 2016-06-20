@@ -19,7 +19,7 @@ _**Example:**_
 ```
 $ gear status
 Cart to get the status for?
-1. play2-2.5.0
+1. play2-2.5.3.2
 ?  1
 ATTR: quota_blocks=1048576
 ATTR: quota_files=80000
@@ -90,14 +90,14 @@ _**Note^2:**_ the first build process it takes a while, up to ~15 minutes becaus
 
 ## Tutorial
 Have a look at http://misto.ch/play-on-openshift/
-at the moment you need to use ```http://cartreflect-claytondev.rhcloud.com/reflect?github=tyrcho/openshift-cartridge-play2&commit=play-2.5.0```.
+at the moment you need to use ``https://raw.githubusercontent.com/almothafar/openshift-cartridge-play2/master/metadata/manifest.yml```.
 
 ## From the web site
 
 1. Go to https://openshift.redhat.com/app/console/applications
 2. Click on "Add Application…"
 3. Go to the bottom page and in Code Anything "URL to a cartridge definition" insert:
-`http://cartreflect-claytondev.rhcloud.com/reflect?github=tyrcho/openshift-cartridge-play2&commit=play-2.5.0`
+`https://raw.githubusercontent.com/almothafar/openshift-cartridge-play2/master/metadata/manifest.yml`
 4. Click on "Next"
 5. Define an url for the Application Name
 6. Go to the bottom page and click the button "Create Application"
@@ -111,7 +111,7 @@ at the moment you need to use ```http://cartreflect-claytondev.rhcloud.com/refle
 ## Command line (rhc)
 
 ```
-rhc app create  myappForPlay  http://cartreflect-claytondev.rhcloud.com/reflect?github=tyrcho/openshift-cartridge-play2&commit=play-2.5.0
+rhc app create  myappForPlay  https://raw.githubusercontent.com/almothafar/openshift-cartridge-play2/master/metadata/manifest.yml
 ```
 
 You might need to increase the timeout to let it the time to download the activator and build the application the first time.
