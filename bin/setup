@@ -15,6 +15,7 @@ echo "#          Your changes may cause your application to fail."      >> ${PRO
 echo "export PLAY2_APPLICATION_PATH=${OPENSHIFT_REPO_DIR}"              >> ${PROFILE_FILE}
 echo "export JAVA_OPTS=\"-Xms512m -Xmx512m\""                           >> ${PROFILE_FILE}
 echo "export SBT_OPTS=\"-Xms512m -Xmx512m\""                            >> ${PROFILE_FILE}
+echo "export ACTIVATOR_OPTS="                                           >> ${PROFILE_FILE}
 chmod 755 ${PROFILE_FILE}
 ln -s ${PROFILE_FILE} ~/.profile
 
