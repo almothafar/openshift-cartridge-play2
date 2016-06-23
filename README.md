@@ -32,7 +32,13 @@ In this file it is defined the following variables:
   - **PLAY2_APPLICATION_PATH** : point to the directory where application is stored. It is possible to set to a specific distribution file in order to deploy;
   - **JAVA_OPTS** : Java options. The default is to use initial and maximum Java heap size to 512MB
   - **SBT_OPTS** : SBT options. The default is to use initial and maximum Java heap size to 512MB
-  - **ACTIVATOR_OPTS** : Activator extend options. The default is nothing, you can add options like ```-Djavax.net.ssl.trustStore="..\conf\cacerts" -Djavax.net.ssl.trustStorePassword="store_password"``` if you going to access Database with SSL. 
+
+  
+**If you want to enable Database SSL connection:**
+First make sure to have the keystore ```cacert``` file inside ```conf``` folder then set the environment variable ```DB_SSL_PASSWORD``` with password of keystore
+```
+rhc env set DB_SSL_PASSWORD="key_store_password"
+```
 
 
 ## Deploy application from distribution file

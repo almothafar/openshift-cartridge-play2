@@ -53,7 +53,12 @@ function start {
       local S_PLAY_CRYPTO_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9_?' | head -c30)
       local S_APPLICATION_CONF=$(find $S_DIST_UNZIPPED -type f -name application.conf | head -n 1)
       local S_RESOURCE_CONF=$(find $S_DIST_UNZIPPED -type f -name openshift.conf | head -n 1)
-      nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} ${ACTIVATOR_OPTS}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+	  if [ -z ${DB_SSL_PASSWORD+x} ]; then 
+		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+	  else echo 
+	   nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} -Djavax.net.ssl.trustStore=../conf/cacerts -Djavax.net.ssl.trustStorePassword="${DB_SSL_PASSWORD}">> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+	  fi
+      
     else
       echo "Distribution file [$S_DIST_FILE] not found, start skipped"
     fi
@@ -69,6 +74,7 @@ function stop {
   if [ $S_STATUS -ne $PLAY2_STATUS_STOPPED ] ; then
     if [ -f "$PLAY2_PID_RUN" ]; then
       local S_PLAY2_PID=$(cat $PLAY2_PID_RUN);
+	  rm $PLAY2_PID_RUN
       echo "Sending SIGTERM to $CARTRIDGE_TYPE:$S_PLAY2_PID ..." 1>&2
       kill_tree $S_PLAY2_PID
     else
