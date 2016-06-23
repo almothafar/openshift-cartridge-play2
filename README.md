@@ -32,6 +32,7 @@ In this file it is defined the following variables:
   - **PLAY2_APPLICATION_PATH** : point to the directory where application is stored. It is possible to set to a specific distribution file in order to deploy;
   - **JAVA_OPTS** : Java options. The default is to use initial and maximum Java heap size to 512MB
   - **SBT_OPTS** : SBT options. The default is to use initial and maximum Java heap size to 512MB
+  - **ACTIVATOR_OPTS** : Activator extend options. The default is nothing, you can add options like ```-Djavax.net.ssl.trustStore="..\conf\cacerts" -Djavax.net.ssl.trustStorePassword="store_password"``` if you going to access Database with SSL. 
 
 
 ## Deploy application from distribution file
@@ -92,7 +93,7 @@ _**Note^2:**_ the first build process it takes a while, up to ~15 minutes becaus
 Have a look at http://misto.ch/play-on-openshift/
 at the moment you need to use ``https://raw.githubusercontent.com/almothafar/openshift-cartridge-play2/master/metadata/manifest.yml```.
 
-## From the web site
+## From the Openshift web console
 
 1. Go to https://openshift.redhat.com/app/console/applications
 2. Click on "Add Application…"
@@ -122,4 +123,5 @@ You need to have installed [Play](http://www.playframework.com/) on your develop
 
 Simply launch ```activator run``` from your invite, and browse to http://localhost:9000/ to see the welcome page.
 
-[![Throughput Graph](https://graphs.waffle.io/tyrcho/openshift-cartridge-play2/throughput.svg)](https://waffle.io/tyrcho/openshift-cartridge-play2/metrics/throughput)
+[![Throughput Graph](https://graphs.waffle.io/almothafar/openshift-cartridge-play2/throughput.svg)](https://waffle.io/almothafar/openshift-cartridge-play2/metrics/throughput)
+
