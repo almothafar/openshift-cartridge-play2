@@ -55,8 +55,8 @@ function start {
       local S_RESOURCE_CONF=$(find $S_DIST_UNZIPPED -type f -name openshift.conf | head -n 1)
 	  if [ -z ${DB_SSL_PASSWORD+x} ]; then 
 		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
-	  else echo 
-	   nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} -Djavax.net.ssl.trustStore=../conf/cacerts -Djavax.net.ssl.trustStorePassword=${DB_SSL_PASSWORD}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+	  else
+		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} -Djavax.net.ssl.trustStore=../conf/cacerts -Djavax.net.ssl.trustStorePassword=${DB_SSL_PASSWORD}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
 	  fi
       
     else
