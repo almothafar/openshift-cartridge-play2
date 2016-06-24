@@ -56,7 +56,7 @@ In order to deploy an application from distribution file (zip dist file) follow 
   _Note:_ replace "my-application-1.0-SNAPSHOT.zip" with your dist zip file.
 
   ```
-  export PLAY2_APPLICATION_PATH=/var/lib/openshift/56f861dd7628e1713600003c/app-root/runtime/repo/my-application-1.0-SNAPSHOT.zip
+  export PLAY2_APPLICATION_PATH=${OPENSHIFT_REPO_DIR}my-application-1.0-SNAPSHOT.zip
   ```
   6. Copy local zip file inside openshift git repository
   7. Publish your dist to openshift gear:
