@@ -1,12 +1,12 @@
 Name: play2
 Cartridge-Short-Name: Play2
-Display-Name: Play Framework 2.5.3
+Display-Name: Play Framework 2.5.4
 Description: "The High Velocity Web Framework For Java and Scala"
-Version: '2.5.3.2'
+Version: '2.5.4'
 License: "MIT"
 License-Url: http://www.gnu.org/copyleft/lesser.txt
 Vendor: none
-Cartridge-Version: '2.5.3.2'
+Cartridge-Version: '2.5.4'
 Cartridge-Vendor: github
 Website: https://github.com/almothafar/openshift-cartridge-play2
 Help-Topics:
