@@ -14,11 +14,16 @@ for file in "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo"/*".zip"; do
 done
 echo $latest_dist > ${PLAY2_RUNTIME}/play2-dist-file.file
 readonly PLAY2_DIST_FILE=${PLAY2_RUNTIME}/play2-dist-file.file
-if [ -f "$latest" ]; then
-	sed 's@PLAY2_APPLICATION_PATH.*@export PLAY2_APPLICATION_PATH='$latest'@' ~/.profile
+if [ -f "$latest_dist" ]; then
+	sed 's@PLAY2_APPLICATION_PATH.*@export PLAY2_APPLICATION_PATH='$latest_dist'@' ~/.profile
 	. ~/.profile
 else
-  echo "No Distribution file found, .profile untouched"
+  echo "No Distribution file found [$latest_dist], .profile untouched"
+fi
+if [ -f "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/ssl_key" ]; then
+	. ${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/ssl_key
+else
+  
 fi
 readonly PLAY2_DEPLOY_PATH=$OPENSHIFT_DATA_DIR/deploy
 # Begin Play2 status
@@ -65,7 +70,7 @@ function start {
       local S_PLAY_CRYPTO_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9_?' | head -c30)
       local S_APPLICATION_CONF=$(find $S_DIST_UNZIPPED -type f -name application.conf | head -n 1)
       local S_RESOURCE_CONF=$(find $S_DIST_UNZIPPED -type f -name openshift.conf | head -n 1)
-	  if [ -z ${DB_SSL_PASSWORD+x} ]; then 
+	  if env | grep DB_SSL_PASSWORD; then 
 		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
 	  else
 		local S_CERTS_FILE=$(find $S_DIST_UNZIPPED -type f -name cacerts | head -n 1)
