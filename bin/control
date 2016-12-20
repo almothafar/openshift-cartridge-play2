@@ -7,7 +7,19 @@ readonly PLAY2_RUNTIME=${OPENSHIFT_DATA_DIR}
 readonly PLAY2_PID_RUN=${PLAY2_RUNTIME}/play2.pid
 readonly PLAY2_PID_ACTIVATOR_BUILD=${PLAY2_RUNTIME}/play2-activator-build.pid
 readonly PLAY2_NUM_BUILD=${PLAY2_RUNTIME}/play2-num-build.counter
+
+unset -v latest_dist
+for file in "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo"/*".zip"; do
+   [[ $file -nt $latest_dist ]] && latest_dist=$file
+done
+echo $latest_dist > ${PLAY2_RUNTIME}/play2-dist-file.file
 readonly PLAY2_DIST_FILE=${PLAY2_RUNTIME}/play2-dist-file.file
+if [ -f "$latest" ]; then
+	sed 's@PLAY2_APPLICATION_PATH.*@export PLAY2_APPLICATION_PATH='$latest'@' ~/.profile
+	. ~/.profile
+else
+  echo "No Distribution file found, .profile untouched"
+fi
 readonly PLAY2_DEPLOY_PATH=$OPENSHIFT_DATA_DIR/deploy
 # Begin Play2 status
 readonly PLAY2_STATUS_BUILDING=1
