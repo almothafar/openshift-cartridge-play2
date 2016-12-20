@@ -19,7 +19,7 @@ _**Example:**_
 ```
 $ gear status
 Cart to get the status for?
-1. play2-2.5.4
+1. play2-2.5.10
 ?  1
 ATTR: quota_blocks=1048576
 ATTR: quota_files=80000
