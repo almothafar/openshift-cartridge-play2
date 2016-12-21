@@ -22,8 +22,8 @@ else
   echo "No Distribution file found [$latest_dist], .profile untouched"
 fi
 
-if [ -f "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/ssl_key" ]; then
-	. ${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/ssl_key
+if [ -f "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/env_vars" ]; then
+	. ${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/env_vars
 else
   echo "Normal nono-ssl database connection will be opened"
 fi
@@ -73,9 +73,9 @@ function start {
       local S_PLAY_CRYPTO_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9_?' | head -c30)
       local S_APPLICATION_CONF=$(find $S_DIST_UNZIPPED -type f -name application.conf | head -n 1)
       local S_RESOURCE_CONF=$(find $S_DIST_UNZIPPED -type f -name openshift.conf | head -n 1)
-	  if env | grep DB_SSL_PASSWORD; then 
+	  if (env | grep SSL_KEYSTORE_PASSWORD); then 
 		local S_CERTS_FILE=$(find $S_DIST_UNZIPPED -type f -name cacerts | head -n 1)
-		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} -Djavax.net.ssl.trustStore=${S_CERTS_FILE} -Djavax.net.ssl.trustStorePassword=${DB_SSL_PASSWORD}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN} -Djavax.net.ssl.trustStore=${S_CERTS_FILE} -Djavax.net.ssl.trustStorePassword=${SSL_KEYSTORE_PASSWORD}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
 	  else
 		nohup $S_BIN_NAME -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -Dconfig.file=../conf/application.conf -Dconfig.resource=../conf/openshift.conf -Dplay.crypto.secret="$S_PLAY_CRYPTO_SECRET" -Dpidfile.path=${PLAY2_PID_RUN}>> $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
 	  fi
@@ -97,6 +97,7 @@ function stop {
       local S_PLAY2_PID=$(cat $PLAY2_PID_RUN);
       echo "Sending SIGTERM to $CARTRIDGE_TYPE:$S_PLAY2_PID ..." 1>&2
       kill_tree $S_PLAY2_PID
+	  rm $PLAY2_PID_RUN
     else
       echo "Failed to locate $CARTRIDGE_TYPE PID File" 1>&2
     fi
