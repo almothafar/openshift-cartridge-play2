@@ -9,7 +9,7 @@ readonly PLAY2_PID_ACTIVATOR_BUILD=${PLAY2_RUNTIME}/play2-activator-build.pid
 readonly PLAY2_NUM_BUILD=${PLAY2_RUNTIME}/play2-num-build.counter
 
 unset -v latest_dist
-for file in "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo"/*".zip"; do
+for file in "${OPENSHIFT_DEPLOYMENTS_DIR}current/repo"/*".zip"; do
    [[ $file -nt $latest_dist ]] && latest_dist=$file
 done
 echo $latest_dist > ${PLAY2_RUNTIME}/play2-dist-file.file
@@ -22,8 +22,8 @@ else
   echo "No Distribution file found [$latest_dist], .profile untouched"
 fi
 
-if [ -f "${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/env_vars" ]; then
-	. ${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/env_vars
+if [ -f "${OPENSHIFT_DEPLOYMENTS_DIR}current/repo/env_vars" ]; then
+	. ${OPENSHIFT_DEPLOYMENTS_DIR}current/repo/env_vars
 else
   echo "Normal nono-ssl database connection will be opened"
 fi

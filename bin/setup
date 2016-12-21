@@ -12,7 +12,7 @@ ln -s ${OPENSHIFT_DATA_DIR}activator-${ACTIVATOR_VERSION}-minimal ${OPENSHIFT_DA
 PROFILE_FILE=${OPENSHIFT_DATA_DIR}/.profile
 echo "# Warning: Be careful with modifications to this file,"            			 > ${PROFILE_FILE}
 echo "#          Your changes may cause your application to fail."      			>> ${PROFILE_FILE}
-echo "export PLAY2_APPLICATION_PATH=${OPENSHIFT_DEPLOYMENTS_DIR}/current/repo/"     >> ${PROFILE_FILE}
+echo "export PLAY2_APPLICATION_PATH=${OPENSHIFT_DEPLOYMENTS_DIR}current/repo/"		>> ${PROFILE_FILE}
 echo "export JAVA_OPTS=\"-Xms512m -Xmx512m\""                           			>> ${PROFILE_FILE}
 echo "export SBT_OPTS=\"-Xms512m -Xmx512m\""                            			>> ${PROFILE_FILE}
 chmod 755 ${PROFILE_FILE}
@@ -36,4 +36,4 @@ ln -s ${BASH_PROFILE_FILE} ~/.bash_profile
 SBT_PLUGINS_PATH=~/.sbt/0.13/plugins/
 SBT_PLUGINS_BUILD_FILE=${SBT_PLUGINS_PATH}build.sbt
 mkdir --parent ${SBT_PLUGINS_PATH}
-echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"1.0.0-M15\")" 	 > ${SBT_PLUGINS_BUILD_FILE}
+echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"1.0.0-M12\")" 	 > ${SBT_PLUGINS_BUILD_FILE}
