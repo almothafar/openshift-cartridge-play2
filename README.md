@@ -3,6 +3,8 @@
 # OpenShift Play Framework Cartridge
 Works with Play 2.5 and Activator : http://www.playframework.com/
 
+_**Diff from original one: Support Auto Scale gears, no need to set the path with distribution file, better way to set environment variables**_
+
 ## Gear command
 Here the gear command implemented:
 
@@ -27,21 +29,26 @@ CLIENT_RESULT: Application is running
 ```
 
 ### Environment variables
-Environment variables could be set in ${OPENSHIFT_DATA_DIR}/.profile file.
+####Environment variables could be set in ${OPENSHIFT_DATA_DIR}/.profile file:
 In this file it is defined the following variables:
   - **PLAY2_APPLICATION_PATH** : point to the directory where application is stored. It is possible to set to a specific distribution file in order to deploy;
   - **JAVA_OPTS** : Java options. The default is to use initial and maximum Java heap size to 512MB
   - **SBT_OPTS** : SBT options. The default is to use initial and maximum Java heap size to 512MB
 
-  
+####Environment variables could be set in `env_vars` file:
+You can override .profile file variables, its highly recommended to set variables in this file if you want scalable gears working as intended.
+ 
 **If you want to enable Database SSL connection:**
-First make sure to have the keystore ```cacert``` file inside ```conf``` folder then set the environment variable ```DB_SSL_PASSWORD``` with password of keystore
+First make sure to have the keystore ```cacert``` file inside ```conf``` folder then set the environment variable ```SSL_KEYSTORE_PASSWORD``` with password of keystore
 ```
-rhc env set DB_SSL_PASSWORD="key_store_password"
+export SSL_KEYSTORE_PASSWORD="changeme"
 ```
-
+_**ATTENTION:**_ If you want scalable gears, its really important to have variables in `env_vars` file, because the new gear will not have the values in .profile file that you have in first gear, its really important to note.
 
 ## Deploy application from distribution file
+In this fork, it will be different than the original cartridge (no need to update .profile variables, i'll do that for you :smiley:), it will auto detect the zip file if you place it directly in `${OPENSHIFT_REPO_DIR}`,
+so make sure you only have single `.zip` file, and make sure you don't have any `.zip` file at all if you want to deply from source code.
+
 In order to deploy an application from distribution file (zip dist file) follow these steps:
   1. Create openshift gear from cartridge play2
   2. Clone openshift gear repository locally:
@@ -50,16 +57,8 @@ In order to deploy an application from distribution file (zip dist file) follow 
   git clone ssh://Here-repository-url
   ```
   3. Build locally zip file
-  4. Connect via ssh to openshift gear
-  5. Update PLAY2_APPLICATION_PATH variable in ~/.profile:
-
-  _Note:_ replace "my-application-1.0-SNAPSHOT.zip" with your dist zip file.
-
-  ```
-  export PLAY2_APPLICATION_PATH=${OPENSHIFT_REPO_DIR}my-application-1.0-SNAPSHOT.zip
-  ```
-  6. Copy local zip file inside openshift git repository
-  7. Publish your dist to openshift gear:
+  4. Copy local zip file inside openshift git repository
+  5. Publish your dist to openshift gear:
 
   ```
   $ git add .
@@ -70,6 +69,7 @@ In order to deploy an application from distribution file (zip dist file) follow 
 Your new application is now published :smiley:
 
 _**ATTENTION:**_ Publish a dist file is very smart solution but this solution could be fill your openshift gear disk because git repository maintains an history of all dist file versions.
+But with this fork, it will be so easy to just delete the application and recreate it again to get around this issue.
 
 ## Deploy application from source code
 In order to deploy an application from source follow these steps:
@@ -94,6 +94,8 @@ Your new application is now published :smiley:
 _**Note:**_ it takes a while build & publishing a new version.
 
 _**Note^2:**_ the first build process it takes a while, up to ~15 minutes because activator program download all dependencies.
+
+_**ATTENTION:**_ it will work if you have single gear to run, but it will not work correclt with scalable gears, or you would have to do repeat these steps each time inside each gear, this means, **this method will not work in auto scaled gears at all**.
 
 ## Tutorial
 Have a look at http://misto.ch/play-on-openshift/
